@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const { default: Axios } = require('axios');
-const KEY = require('./secret');
+const KEY = require('./secret/secret');
+const Base64 = require('base-64');
 
 app.use(bodyParser.json());
 
@@ -11,8 +12,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', async (req, res, next) => {
-    const {name, age, filename} = req.body;
-    await Axios.get('https://api.github.com/repos/hackarmour/reportsDB', {
+    const {name, age, filename} = req.body;   //  No file extention required !
+    const data = JSON.stringify({name, age})
+    const encoded = Base64.encode(data)
+    await Axios.put("https://api.github.com/repos/hackarmour/reportsDB/contents/"+filename+".json", {
+        message: "boooyeah",
+        content: encoded
+    }, {
         headers: {'Authorization': "token " + KEY}
     })
         .then(data => {
