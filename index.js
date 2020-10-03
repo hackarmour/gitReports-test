@@ -28,6 +28,19 @@ app.post('/', async (req, res, next) => {
         })
 })
 
+app.get('/:id', async (req, res, next) => {
+    const id = req.params.id;
+    console.log(id)
+    await Axios.get('https://api.github.com/repos/hackarmour/reportsDB/contents/'+id+'.json', {
+        headers: {'Authorization': "token "+ KEY}
+    }).then((result) => {
+        const content = result.data.content;
+        const final = JSON.parse(Base64.decode(content))
+        return res.json(final);
+    })
+})
+
+
 
 app.listen(4000, () => {
     console.log('Example app listening on port 4000');
