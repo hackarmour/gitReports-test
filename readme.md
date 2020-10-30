@@ -13,3 +13,4 @@ const KEY = 'YOUR-GITHUB-PERSONAL-TOKEN'
 module.exports = KEY;
 
 ````
+Personal Tokens can be generated from the settings of your github account.
